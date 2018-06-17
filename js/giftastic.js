@@ -18,20 +18,38 @@ function createButtons() {
     var buttonContainer = $('#button-container');
     buttonContainer.empty();
     for( var i = 0; i < animals.length; i++ ) {
-        $('<button>').addClass('giphyBtn').text( animals[i] ).val( animals[i] ).appendTo( buttonContainer );
+        $('<button>').addClass('giphyBtn btn btn-info m-1 shadow').text( animals[i] ).val( animals[i] ).appendTo( buttonContainer );
     }
 }   
 
 // Adding image to some container
-function addImage( container, still, animate  ){
-    $('<img>').attr({
+function addImage( container, still, animate, rating  ){
+    var col = $('<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">');
+    var card = $('<div class="card bg-info p-0 mx-0 my-1">');
+    var cardBody = $('<div class"card-body">');
+    var cardTitle = $('<h5 class="card-title ml-1 mt-1 text-white">').text( 'Rating: '+rating.toUpperCase() );
+    
+    $('<img class="card-img-top">').attr({
         'src':still,
         'data-still': still,
         'data-animate': animate,
         'data-state': 'still',
         'width': '200',
-        'height': '200'
-    }).addClass('animatedGIF').appendTo( container );
+        'height': '200',
+        'alt': 'image'
+    }).addClass('animatedGIF').appendTo( card );
+
+
+    cardBody.appendTo( card );
+
+    cardTitle.appendTo( card );
+
+    card.appendTo( col );
+
+    col.appendTo( container );
+
+
+
 }
 
 // Toggle animation function
@@ -63,7 +81,7 @@ function giphyBtnClick( event ) {
 
         var data = response.data;
 
-        $('#gif-container').empty;
+        $('#gif-container').empty();
 
         for ( var i = 0; i < data.length; i++) {
             var stillImage = data[i].images.downsized_still.url;
@@ -74,7 +92,7 @@ function giphyBtnClick( event ) {
             console.log( animateImage );
             console.log( imageRating );
 
-            addImage( $('#gif-container'), stillImage, animateImage );
+            addImage( $('#gif-container'), stillImage, animateImage, imageRating );
         }
     });
 }
